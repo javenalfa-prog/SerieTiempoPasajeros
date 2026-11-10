@@ -7,10 +7,9 @@ from datos import cargar_datos
 from modelos import MODELOS
 
 # Paleta de colores de la app
-AZUL_MEDIANOCHE = "#101418"
-AZUL_PIZARRA = "#2C3E50"
-CHAMPAN = "#DCC9A6"
-ORO_MUDO = "#8C6D3F"
+AZUL_MARINO = "#13284B"
+BLANCO_HUESO = "#F8F4E9"
+ORO = "#B08D57"
 
 # Configuración de la página
 st.set_page_config(
@@ -19,49 +18,56 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilos personalizados (tipografía y fondo)
+# Estilos personalizados (fondo blanco hueso, texto azul marino y dorado)
 st.markdown(
     f"""
     <style>
     .stApp {{
-        background-color: {CHAMPAN};
+        background-color: {BLANCO_HUESO};
     }}
     html, body, p, label, span {{
-        color: {AZUL_MEDIANOCHE};
+        color: {AZUL_MARINO};
     }}
     h1, h2, h3, h4, h5, h6 {{
-        color: {AZUL_PIZARRA} !important;
+        color: {AZUL_MARINO} !important;
     }}
     [data-testid="stMetric"] {{
-        background-color: rgba(140, 109, 63, 0.20);
-        border: 1px solid {ORO_MUDO};
+        background-color: rgba(176, 141, 87, 0.15);
+        border: 1.5px solid {ORO};
         border-radius: 10px;
         padding: 14px;
     }}
     [data-testid="stMetricValue"] {{
-        color: {AZUL_PIZARRA} !important;
+        color: {AZUL_MARINO} !important;
     }}
     [data-testid="stMetricLabel"] {{
-        color: {AZUL_MEDIANOCHE} !important;
+        color: {AZUL_MARINO} !important;
     }}
     .stTabs [data-baseweb="tab"] {{
-        color: {AZUL_PIZARRA};
+        color: {AZUL_MARINO};
         font-weight: 600;
     }}
     .stTabs [aria-selected="true"] {{
-        color: {ORO_MUDO} !important;
-        border-bottom-color: {ORO_MUDO} !important;
+        color: {ORO} !important;
+        border-bottom-color: {ORO} !important;
     }}
     [data-testid="stAlert"] {{
-        background-color: rgba(140, 109, 63, 0.20);
-        color: {AZUL_MEDIANOCHE};
-        border: 1px solid {ORO_MUDO};
+        background-color: rgba(176, 141, 87, 0.15);
+        color: {AZUL_MARINO};
+        border: 1.5px solid {ORO};
+        border-radius: 10px;
     }}
     [data-testid="stAlert"] p {{
-        color: {AZUL_MEDIANOCHE} !important;
+        color: {AZUL_MARINO} !important;
+    }}
+    [data-testid="stPlotlyChart"] {{
+        border: 2px solid {ORO};
+        border-radius: 12px;
+        background-color: #FFFFFF;
+        padding: 8px;
     }}
     [data-testid="stDataFrame"] {{
-        border: 1px solid {ORO_MUDO};
+        border: 1.5px solid {ORO};
         border-radius: 8px;
     }}
     </style>
@@ -71,23 +77,23 @@ st.markdown(
 
 
 def estilo_grafico(fig, alto=430):
-    """Aplica el fondo champán, la tipografía y la rejilla a un gráfico."""
+    """Aplica el fondo blanco hueso, la tipografía azul marino y la rejilla."""
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color=AZUL_PIZARRA),
-        title=dict(font=dict(color=AZUL_PIZARRA, size=18)),
+        font=dict(color=AZUL_MARINO),
+        title=dict(font=dict(color=AZUL_MARINO, size=18)),
         legend=dict(
-            font=dict(color=AZUL_PIZARRA),
-            bgcolor="rgba(220, 201, 166, 0.75)",
-            bordercolor=ORO_MUDO,
+            font=dict(color=AZUL_MARINO),
+            bgcolor="rgba(248, 244, 233, 0.85)",
+            bordercolor=ORO,
             borderwidth=1
         ),
         margin=dict(l=40, r=20, t=60, b=40),
         height=alto
     )
-    fig.update_xaxes(color=AZUL_PIZARRA, gridcolor="rgba(44, 62, 80, 0.15)")
-    fig.update_yaxes(color=AZUL_PIZARRA, gridcolor="rgba(44, 62, 80, 0.15)")
+    fig.update_xaxes(color=AZUL_MARINO, gridcolor="rgba(19, 40, 75, 0.12)")
+    fig.update_yaxes(color=AZUL_MARINO, gridcolor="rgba(19, 40, 75, 0.12)")
     return fig
 
 
@@ -125,7 +131,7 @@ with pestana_historia:
         df, x='Month', y='Passengers',
         labels={'Month': 'Mes', 'Passengers': 'Número de pasajeros'},
         title="Pasajeros de aerolínea a lo largo del tiempo",
-        color_discrete_sequence=[ORO_MUDO]
+        color_discrete_sequence=[ORO]
     )
     fig_historia.update_traces(line=dict(width=3))
     estilo_grafico(fig_historia)
@@ -159,10 +165,10 @@ with pestana_temporada:
         text_auto='.0f',
         labels={'Mes': 'Mes del año', 'Passengers': 'Promedio de pasajeros'},
         title="Promedio de pasajeros por mes (Temporada alta y baja)",
-        color_discrete_sequence=[ORO_MUDO]
+        color_discrete_sequence=[ORO]
     )
     fig_temporada.add_hline(
-        y=media_general, line_dash="dash", line_color=AZUL_PIZARRA,
+        y=media_general, line_dash="dash", line_color=AZUL_MARINO,
         annotation_text="Promedio normal", annotation_position="bottom right"
     )
     estilo_grafico(fig_temporada)
@@ -195,29 +201,29 @@ with pestana_examen:
             except Exception as error:
                 st.warning(f"El modelo {nombre} no pudo calcularse: {error}")
 
-    # Tonos de oro para distinguir cada modelo manteniendo el contraste
+    # Tonos de dorado para distinguir cada modelo manteniendo el contraste
     tonos_oro = {
-        "Copiar el año pasado": "#5C4A2A",
-        "Suavizamiento exponencial": "#6E5330",
+        "Copiar el año pasado": "#6E5330",
+        "Suavizamiento exponencial": "#7D5F32",
         "Modelo de temporada (Holt-Winters)": "#8C6D3F",
-        "SARIMA": "#9C7A45",
-        "Regresión lineal": "#A8895A",
-        "Prophet": "#7D5F32",
+        "SARIMA": "#A07C46",
+        "Regresión lineal": "#C9A876",
+        "Prophet": "#9C7A45",
     }
 
     fig_examen = go.Figure()
     fig_examen.add_trace(go.Scatter(
         x=train["Month"], y=train["Passengers"], name="Entrenamiento",
-        line=dict(color="#9C7A45", width=1.5)
+        line=dict(color="#C9A876", width=1.5)
     ))
     fig_examen.add_trace(go.Scatter(
         x=test["Month"], y=test["Passengers"], name="Real (Prueba)",
-        line=dict(color=AZUL_PIZARRA, width=3)
+        line=dict(color=AZUL_MARINO, width=3)
     ))
     for nombre, valores in predicciones.items():
         fig_examen.add_trace(go.Scatter(
             x=test["Month"], y=valores, name=nombre,
-            line=dict(color=tonos_oro.get(nombre, ORO_MUDO), dash="dash", width=2)
+            line=dict(color=tonos_oro.get(nombre, ORO), dash="dash", width=2)
         ))
 
     estilo_grafico(fig_examen, alto=470)
@@ -272,12 +278,12 @@ with pestana_pronostico:
     fig_pronostico = go.Figure()
     fig_pronostico.add_trace(go.Scatter(
         x=df["Month"], y=df["Passengers"], name="Histórico",
-        line=dict(color="#9C7A45", width=2.5)
+        line=dict(color="#8C6D3F", width=2.5)
     ))
     fig_pronostico.add_trace(go.Scatter(
         x=df_pronostico["Month"], y=df_pronostico["Passengers_Pred"],
         name=f"Pronóstico 1961 ({modelo_elegido})",
-        line=dict(color=ORO_MUDO, width=3, dash="dash")
+        line=dict(color=ORO, width=3, dash="dash")
     ))
     estilo_grafico(fig_pronostico, alto=470)
     fig_pronostico.update_layout(title="Histórico y Pronóstico de pasajeros para 1961")
@@ -295,4 +301,3 @@ with pestana_pronostico:
         "Se proyecta una continuación del crecimiento histórico manteniendo las altas y bajas estacionales. "
         "Para el negocio, esta información es vital para presupuestar ingresos, contratar personal de apoyo en temporada alta y negociar contratos con proveedores con anticipación."
     )
-
